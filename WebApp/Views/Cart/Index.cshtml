@@ -1,0 +1,141 @@
+﻿@{
+    Layout = "_LayoutAuth";
+}
+@model IEnumerable<Cart>
+    <!-- Shoping Cart Section Begin -->
+    <section class="shoping-cart spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="shoping__cart__table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Check</th>
+                                    <th>Products</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            @foreach(var item in Model)
+                            {
+                               <tr class="cross" v="@item.ProductId">
+                                    <td class="shoping__cart__item__close">
+                                        <span id="close-@item.ProductId" class="icon_close"></span>
+                                    </td>
+                                    <td class="shoping__cart__item">
+                                        <img class="featured__item__pic set-bg" src="/img/@item.ImageUrl" alt="">
+                                        <h5>@item.ProductName</h5>
+                                    </td>
+                                    <td class="shoping__cart__price" >
+                                        <p id="gia-@item.ProductId" >
+                                            @item.UnitPrice
+                                        </p>
+                                    </td>
+                                    <td class="shoping__cart__quantity">
+                                        <div class="quantity" id="soluong-@item.ProductId"> 
+                                            <div class="quantity-select" v="@item.ProductId" g="@item.UnitPrice">            
+                                                <div class="entry value-minus">&nbsp;</div>
+                                                <div class="entry value" ><span class="span-1">@item.Quantity</span></div>
+                                                <div class="entry value-plus active">&nbsp;</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="shoping__cart__total">
+                                        <div class="ValueTotal">
+                                            <p id="total-@item.ProductId" ></p>
+                                            <script>
+                                                document.getElementById(`total-${@item.ProductId}`).innerHTML = @item.Quantity * @item.UnitPrice;
+                                            </script>
+                                        </div>
+                                    </td>
+                                </tr> 
+                            }
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="shoping__cart__btns">
+                        <a href="/home/index" class="primary-btn cart-btn">CONTINUE SHOPPING</a>
+                        <a href="/Cart/index" class="primary-btn cart-btn cart-btn-right"><span class="icon_loading"></span>
+                            Upadate Cart</a>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="shoping__continue">
+                        <div class="shoping__discount">
+                            <h5>Discount Codes</h5>
+                            <form action="#">
+                                <input type="text" placeholder="Enter your coupon code">
+                                <button type="submit" class="site-btn">APPLY COUPON</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="shoping__checkout">
+                        <h5>Cart Total</h5>
+                        <ul>
+                            <li>Subtotal <span id="subtotal">$454.98</span></li>
+                            <li>Total <span>$454.98</span></li>
+                        </ul>
+                        <a href="/Cart/checkout" class="primary-btn">PROCEED TO CHECKOUT</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Shoping Cart Section End -->
+<script>
+
+function updateValue(element, id, gia) {
+    var qua = parseInt(element.innerText);
+    var total = qua * gia;
+    document.getElementById(`total-${id}`).innerHTML = total ;
+    var totalsub = 0;
+    totalsub += total;
+    document.getElementById('subtotal').innerHTML = totalsub;
+}
+
+$(document).ready(function(c) {
+	$(".shoping__cart__item__close").on('click', function(c){
+		//console.log($(this).closest('tr.cross'));
+			if(confirm('Are you sure delete?')){
+			$(this).closest('tr.cross').fadeOut('slow', function(c){
+				var pid = $(this).attr('v');
+				$.post('/cart/delete', {ProductId: pid}, (d) =>{
+					console.log(d);
+				})
+				$(this).remove();
+			});
+		}
+	});	  
+});
+function save(qty, pid){
+	$.post('/Cart/edit',{"quantity": qty, "productId": pid}, (d) => {
+		console.log(d);
+	});
+}
+$('.value-plus').on('click', function(){
+	var divUpd = $(this).parent().find('.value'), pid = $(this).parent().attr('v'),gia = $(this).parent().attr('g') , newVal = parseInt(divUpd.text(), 10)+1;
+	save(newVal, divUpd.attr('v'));
+	divUpd.text(newVal);
+    updateValue(divUpd[0], pid, gia);
+});
+
+$('.value-minus').on('click', function(){
+	var divUpd = $(this).parent().find('.value'),pid = $(this).parent().attr('v'),gia = $(this).parent().attr('g') , newVal = parseInt(divUpd.text(), 10)-1;
+	if(newVal>=1){
+		save(newVal, divUpd.attr('v') );
+		divUpd.text(newVal);
+        updateValue(divUpd[0], pid, gia);
+	}
+});
+</script>
+ 

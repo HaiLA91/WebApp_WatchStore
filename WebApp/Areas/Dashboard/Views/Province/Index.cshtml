@@ -1,0 +1,20 @@
+﻿@model IEnumerable<Province>
+<a href="/dashboard/province/import">Import</a>
+<a asp-action="import" asp-area="dashboard" asp-controller="province">Import</a>
+<table class="table table-bordered">
+    <thead class="table-dark">
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Type</th>
+        </tr>
+    </thead>
+    @foreach(var item in Model)
+    {
+        <tr>
+            <td>@item.ProvinceId</td>
+            <td>@item.ProvinceName</td>
+            <td>@item.ProvinceType</td>
+        </tr>
+    }
+</table>

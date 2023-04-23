@@ -1,0 +1,75 @@
+﻿@model IEnumerable<Ward>
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+  Import
+</button>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <form method="post" enctype="multipart/form-data" action="/dashboard/Ward/import" class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Import</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+            <label>Excell Import</label>
+            <input type="file" name="f" accept="application/vnd.openxmlformats-officedocument.speradshaeetml.sheet" />
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button class="btn btn-primary">Import</button>
+      </div>
+    </form>
+  </div>
+</div>
+<link rel="stylesheet" href="/css/jquery-ui.css"/>
+<script src="/js/jquery-ui.js"></script>
+	<div class="ui-widget">
+	<label for="birds">Birds: </label>
+	<input id="birds">
+	</div>
+
+	<div class="ui-widget" style="margin-top:2em; font-family:Arial">
+	Result:
+	<div id="log" style="height: 200px; width: 300px; overflow: auto;" class="ui-widget-content"></div>
+	</div>
+
+   <script>
+function log( message ) {
+    $( "<div>" ).text( message ).prependTo( "#log" );
+    $( "#log" ).scrollTop( 0 );
+}
+ 
+$( "#birds" ).autocomplete({
+    source: "/dashboard/ward/search",
+    minLength: 2,
+    select: function( event, ui ) {
+    //log( "Selected: " + ui.item.value + " aka " + ui.item.id );
+    $.post(`/dashboard/ward/detail/${ui.item.id}`, (d) => {
+        $('#log').html(`${d['wardName']}, ${d['districtName']}, ${d['provinceName']}`);
+    });
+    }
+});
+  </script>
+
+<table class="table table-bordered">
+    <thead class="table-dark">
+        <tr>
+            <th>Id</th>
+            <th>District</th>
+            <th>Name</th>
+            <th>Type</th>
+        </tr>
+    </thead>
+    @foreach(var item in Model)
+    {
+        <tr>
+            <th>@item.WardId</th>
+            <td>@item.DistrictId</td>
+            <td>@item.WardName</td>
+            <td>@item.WardType</td>
+        </tr>
+    }
+</table>

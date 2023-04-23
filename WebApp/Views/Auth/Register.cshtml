@@ -1,0 +1,33 @@
+﻿@{
+    Layout = "_LayoutAuth";
+}
+
+@model RegisterModel
+<!--Register-->
+
+<div class="login">
+	<div class="main-agileits">
+		<div class="form-w3agile form1">
+			<h3>Register</h3>
+			<form method="post">
+				<div class="key">
+					<i class="fa fa-user" aria-hidden="true"></i>
+					<input  type="text" asp-for="Username" >
+					<div class="clearfix"></div>
+				</div>
+				<div class="key">
+					<i class="fa fa-phone" aria-hidden="true"></i>
+					<input  type="text" asp-for ="Phone">
+					<div class="clearfix"></div>
+				</div>
+				<div class="key">
+					<i class="fa fa-lock" aria-hidden="true"></i>
+					<input  type="password" asp-for="Password" >
+					<div class="clearfix"></div>
+				</div>
+				<input type="submit" value="Submit">
+			</form>
+		</div>
+				
+	</div>
+</div>

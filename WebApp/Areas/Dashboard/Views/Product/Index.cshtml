@@ -1,0 +1,111 @@
+﻿@model IEnumerable<Product>
+<a href="/api/product/create" class="btn btn-primary">Create</a>
+
+<div class="modal" id="edit" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <form method ="post" action ="/dashboard/product/edit" class="modal-content">
+      <input type="hidden" name="id" />
+      <div class="modal-header">
+        <h5 class="modal-title">Edit</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div>
+            <label>Brand</label>
+            <div>
+                <select name="BrandId">
+                    @foreach(Brand item in ViewBag.Brands)
+                    {
+                        <option value="@item.BrandId">@item.BrandName</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <div>
+            <label>Category</label>
+            <div>
+                <select name="CategoryId">
+                    @foreach(Category item in ViewBag.categories)
+                    {
+                        <option value="@item.CategoryId">@item.CategoryName</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <div>
+            <label>Name</label>
+            <div>
+                <input type="text" name="productName"/>
+            </div>
+        </div>
+        <div>
+            <label>Description</label>
+            <div>
+                <textarea name="Description"></textarea>
+            </div>
+        </div>
+        <div>
+            <label>Price</label>
+            <div>
+                <input type="number" name="price"/>
+            </div>
+        </div>
+        <div>
+            <label>Image</label>
+            <div>
+                <img id="img" width="150"/>
+                <input type="hidden" name ="imageUrl"/>
+                <input type="url" name="url"/>
+            </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<table class="table table-bordered">
+    <thead class="table-dark">
+        <tr>
+            <th>ProductId</th>
+            <th>CategoryId</th>
+            <th>BrandId</th>
+            <th>ProductName</th>
+            <th>ImageUrl</th>
+            <th>UnitPrice</th>
+            <th>SaleOfPrice</th>
+            <th>Description</th>
+            <th>Content</th>
+            <th>IsPopular</th>
+            <th>Update</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var item in ViewBag.Products)
+        {
+            <tr>
+                <td>@item.ProductId</td>
+                <td>@item.CategoryId</td>
+                <td>@item.BrandId</td>
+                <td>@item.ProductName</td>
+                <td>
+                    <img src="/Img/@item.ImageUrl" width="150" />
+                </td>
+                <td>@item.UnitPrice</td>
+                <td>@item.SaleOfPrice</td>
+                <td>@item.Description</td>
+                <td>@item.Content</td>
+                <td>@item.IsPopular</td>
+                <td> <a href="/api/product/edit/@item.ProductId">Update</a></td>
+                <td> <a href="/api/product/Update/@item.ProductId">Delete</a></td>
+            </tr>
+
+        }
+    </tbody>
+</table>

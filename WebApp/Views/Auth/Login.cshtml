@@ -1,0 +1,35 @@
+﻿@{
+    Layout = "_LayoutAuth";
+}
+@model LoginModel
+
+<div class="login">
+	<div class="main-agileits">
+		<div class="form-w3agile">
+			<h3>Login</h3>
+			<form  method="post">
+				<div class="key">
+					<i class="fa fa-user " aria-hidden="true"></i>
+					<input  type="text" asp-for="Usr" >
+					<div class="clearfix"></div>
+				</div>
+				<div class="key">
+					<i class="fa fa-lock" aria-hidden="true"></i>
+					<input  type="password" asp-for="Pwd">
+					<div class="clearfix"></div>
+				</div>
+				<div>
+					<label asp-for="Rem">Remember me!</label>
+					<input type="checkbox" asp-for="Rem" />
+				</div>
+				<input type="submit" value="Login">
+			</form>
+		</div>
+		<div class="forg">
+			<a href="/auth/forgot" class="forg-left">Forgot Password</a>
+			<a href="/auth/register" class="forg-right">Register</a>
+		<div class="clearfix"></div>
+		</div>
+	</div>
+</div>
+
